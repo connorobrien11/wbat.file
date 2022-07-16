@@ -1,335 +1,337 @@
 pcall(function()
-function mainscript()  
-    local hub = loadstring(game:HttpGet("https://raw.githubusercontent.com/stefan-rblx/experiment/main/ui"))()
-    local window = hub:CreateWindow("<font color=\"#4FC3F7\">Bruhnhe Hub</font>", "Project Slayers", true)
+function mainscript()
+    if game.PlaceId == 6152116144 then  
+        local hub = loadstring(game:HttpGet("https://raw.githubusercontent.com/connorobrien11/jzac.za/main/RJgVELP6tzWgbE6c976MDBcp6TtU4q"))()
+        local window = hub:CreateWindow("<font color=\"#4FC3F7\">Bruhnhe Hub</font>", "Project Slayers", true)
 
-    local tabs = {
-        Tab = window:CreatePage("Client"),
-        Tab2 = window:CreatePage("Farming"),
-        Tab3 = window:CreatePage("Visuals"),
-        Tab4 = window:CreatePage("Teleports")
-    }
-    local sections = {
-        Movement = tabs.Tab:CreateSection("Movement"),
-        Character = tabs.Tab:CreateSection("Character"),
-        Mastery = tabs.Tab2:CreateSection("Mastery"), 
-        Quests = tabs.Tab2:CreateSection("Quests"),
-        Players = tabs.Tab3:CreateSection("ESP"),
-        World = tabs.Tab3:CreateSection("World"),
-        Locations = tabs.Tab4:CreateSection("Locations"),
-        Menu = tabs.Tab:CreateSection("Menu")
-    }
-    local settings = {
-        flightspeed = 0
-    }
+        local tabs = {
+            Tab = window:CreatePage("Client"),
+            Tab2 = window:CreatePage("Farming"),
+            Tab3 = window:CreatePage("Visuals"),
+            Tab4 = window:CreatePage("Teleports")
+        }
+        local sections = {
+            Movement = tabs.Tab:CreateSection("Movement"),
+            Character = tabs.Tab:CreateSection("Character"),
+            Mastery = tabs.Tab2:CreateSection("Mastery"), 
+            Quests = tabs.Tab2:CreateSection("Quests"),
+            Players = tabs.Tab3:CreateSection("ESP"),
+            World = tabs.Tab3:CreateSection("World"),
+            Locations = tabs.Tab4:CreateSection("Locations"),
+            Menu = tabs.Tab:CreateSection("Menu")
+        }
+        local settings = {
+            flightspeed = 0
+        }
 
-    function slowfall_1()
-        if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then 
-            local bv = Instance.new("BodyVelocity", game.Players.LocalPlayer.Character.HumanoidRootPart)
-            bv.MaxForce = Vector3.new(3000,3000,3000)
-            bv.Velocity = Vector3.new(0,-50,0)
-            if getgenv().slowfall == false then 
-                if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then 
-                    for i,v in pairs(game.Players.LocalPlayer.Character.HumanoidRootPart:GetChildren()) do 
-                        if v:IsA("BodyVelocity") and v.MaxForce == Vector3.new(3000,3000,3000) then
-                            v:Destroy()
+        function slowfall_1()
+            if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then 
+                local bv = Instance.new("BodyVelocity", game.Players.LocalPlayer.Character.HumanoidRootPart)
+                bv.MaxForce = Vector3.new(3000,3000,3000)
+                bv.Velocity = Vector3.new(0,-50,0)
+                if getgenv().slowfall == false then 
+                    if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then 
+                        for i,v in pairs(game.Players.LocalPlayer.Character.HumanoidRootPart:GetChildren()) do 
+                            if v:IsA("BodyVelocity") and v.MaxForce == Vector3.new(3000,3000,3000) then
+                                v:Destroy()
+                            end
                         end
                     end
                 end
             end
         end
-    end
 
-    sections.Movement:CreateToggle("Enable Flight", {Description = "Allows you to fly in the air"}, function(state)
-        getgenv().flight = false
-        getgenv().flight = state
-        if state then
-            while wait() do 
-                if not getgenv().flight then break end
-                local plr = game.Players.LocalPlayer.Character
-                plr.HumanoidRootPart.Velocity = game.Workspace.CurrentCamera.CFrame.lookVector * settings.flightspeed
-            end
-        end
-    end)
-    sections.Movement:CreateToggle("Slow Fall", {Description = "Decends your character at a slow speed"}, function(state)
-        getgenv().slowfall = false
-        getgenv().slowfall = state
-        if state then 
-            while wait() do 
-                slowfall_1()
-            end
-        end
-    end)
-    sections.Movement:CreateSlider("Flight Speed", {Min = 10, Max = 225, DefaultValue = 10}, function(v)
-        settings.flightspeed = v
-    end)
-
-    sections.Character:CreateButton("Reset", function()
-        local plr = game.Players.LocalPlayer.Character
-        if plr:FindFirstChild("Humanoid") then 
-            plr.Humanoid.Health = 0
-        end
-    end)
-    sections.Character:CreateButton("Revive Yourself", function()
-        local plr = game.Players.LocalPlayer.Character
-        if plr:FindFirstChild("Humanoid") then 
-            local ohString1 = "Revive"
-            local ohInstance2 = plr
-            local ohInstance3 = plr
-
-            game:GetService("ReplicatedStorage").Remotes.To_Server.Handle_Initiate_S:FireServer(ohString1, ohInstance2, ohInstance3)
-        end
-    end)
-    sections.Character:CreateToggle("Auto Evasive", {Description = "Auto evades attacks for you when its ready"}, function(state)
-        getgenv().evade = false
-        getgenv().evade = state
-        if state then
-            while wait(.1) do 
-                if not getgenv().wagon then break end
-                game:GetService("ReplicatedStorage").Remotes.evasive:FireServer()
-            end
-        end
-    end)
-    sections.Character:CreateDropdown("Buy Items", {List = {"Green Katana","Golden Katana"}, Default = "Select A Item"}, function(s)
-        if s == "Green Katana" then 
-            game:GetService("ReplicatedStorage").Remotes.To_Server.Handle_Initiate_S:FireServer("buysomething", game:GetService("Players").LocalPlayer, "Green Katana", game:GetService("ReplicatedStorage").Player_Data[tostring(game.Players.LocalPlayer)].Yen, game:GetService("ReplicatedStorage").Player_Data[tostring(game.Players.LocalPlayer)].Inventory)
-        end
-        if s == "Golden Katana" then 
-            game:GetService("ReplicatedStorage").Remotes.To_Server.Handle_Initiate_S:FireServer("buysomething", game:GetService("Players").LocalPlayer, "Golden Katana", game:GetService("ReplicatedStorage").Player_Data[tostring(game.Players.LocalPlayer)].Yen, game:GetService("ReplicatedStorage").Player_Data[tostring(game.Players.LocalPlayer)].Inventory)
-        end
-    end)
-
-    sections.Mastery:CreateToggle("Farm Fist Mastery", {Description = "Automatically punches for you (Be next to a log)"}, function(state)
-        getgenv().fist = false
-        getgenv().fist = state
-        if state then
-            while wait() do 
-                if not getgenv().fist then break end
-                wait(0.3)
-                mouse1click()
-            end
-        end
-    end)
-    sections.Mastery:CreateButton("Check Breathing Mastery", function()
-        game:GetService("StarterGui"):SetCore("SendNotification",{
-            Title = "Bruhnhe Hub",
-            Text = "Breathing mastery is at: ".. game:GetService("ReplicatedStorage")["Player_Data"][tostring(game.Players.LocalPlayer)].Mastery["Breathing"].Value.. "%",
-        })
-    end)
-    sections.Mastery:CreateButton("Check Demon Art Mastery", function()
-        game:GetService("StarterGui"):SetCore("SendNotification",{
-            Title = "Bruhnhe Hub",
-            Text = "Demon art mastery is at: ".. game:GetService("ReplicatedStorage")["Player_Data"][tostring(game.Players.LocalPlayer)].Mastery["Demon_Art"].Value.. "%",
-        })
-    end)
-    sections.Quests:CreateToggle("Auto Deliver Wagon", {Description = "Does the wagon quest for you ⚠️"}, function(state)
-        getgenv().wagon = false
-        getgenv().wagon = state
-        if state then
-            while wait(.1) do 
-                if not getgenv().wagon then break end
-                local plr = game.Players.LocalPlayer.Character.HumanoidRootPart
-                local ts = game:GetService("TweenService")
-                ts:Create(plr, TweenInfo.new(4.5, Enum.EasingStyle.Linear), {CFrame = CFrame.new(226, 283, -1607)}):Play() -- pickup location
-                wait(6)
-                game:GetService("Players").LocalPlayer.PlayerGui.Npc_Dialogue.Do_Text:Fire("Gradnpa_Wagwon_Dialogue", "Grandpa Wagwon")
-                wait(2)
-                game:GetService("Players").LocalPlayer.PlayerGui.Npc_Dialogue.Button_Clicked:Fire(true)
-                wait(0.5)
-                game:GetService("Players").LocalPlayer.PlayerGui.Npc_Dialogue.Button_Clicked:Fire(true)
-                wait(0.5)
-                game:GetService("Players").LocalPlayer.PlayerGui.Npc_Dialogue.Button_Clicked:Fire(true)
-                wait(0.5)
-                game:GetService("Players").LocalPlayer.PlayerGui.Npc_Dialogue.Button_Clicked:Fire(true)
-                wait(3)
-                ts:Create(plr, TweenInfo.new(4.5, Enum.EasingStyle.Linear), {CFrame = CFrame.new(453, 275, -2672)}):Play()
-                wait(7)
-                ts:Create(plr, TweenInfo.new(4.5, Enum.EasingStyle.Linear), {CFrame = CFrame.new(226, 283, -1607)}):Play()
-                wait(35)
-            end
-        end
-    end)
-    sections.Quests:CreateButton("Manual Teleport", function()
-        local plr = game.Players.LocalPlayer.Character.HumanoidRootPart
-        local ts = game:GetService("TweenService")
-        ts:Create(plr, TweenInfo.new(1.5), {CFrame = CFrame.new(227, 283, -1664)}):Play()
-        wait(1.5)
-        ts:Create(plr, TweenInfo.new(1.5), {CFrame = CFrame.new(385, 351, -1758)}):Play()
-        wait(1.8)
-        ts:Create(plr, TweenInfo.new(1.5), {CFrame = CFrame.new(385, 351, -1983)}):Play()
-        wait(2.4)
-        ts:Create(plr, TweenInfo.new(1.5), {CFrame = CFrame.new(540, 388, -2258)}):Play()
-        wait(1.5)
-        ts:Create(plr, TweenInfo.new(1.5), {CFrame = CFrame.new(475, 370, -2524)}):Play()
-        wait(2.7)
-        ts:Create(plr, TweenInfo.new(1.5), {CFrame = CFrame.new(454, 275, -2675)}):Play()
-        wait(3)
-        ts:Create(plr, TweenInfo.new(1.5), {CFrame = CFrame.new(475, 370, -2524)}):Play()
-        wait(1.5)
-        ts:Create(plr, TweenInfo.new(1.5), {CFrame = CFrame.new(540, 388, -2258)}):Play()
-        wait(2.4)
-        ts:Create(plr, TweenInfo.new(1.5), {CFrame = CFrame.new(385, 351, -1983)}):Play()
-        wait(1.8)
-        ts:Create(plr, TweenInfo.new(1.5), {CFrame = CFrame.new(385, 351, -1758)}):Play()
-        wait(1.5)
-        ts:Create(plr, TweenInfo.new(1.5), {CFrame = CFrame.new(227, 283, -1664)}):Play()
-    end)
-
-
-    getgenv().esp_loaded = false
-    getgenv().Visibility = false 
-    getgenv().nameESP = false
-    getgenv().distance = false
-    getgenv().outline = false
-
-    sections.Players:CreateToggle("Enabled", {Description = "Enables the visuals"}, function(Value)
-            if getgenv().esp_loaded == false and Value == true then
-                getgenv().esp_loaded = true
-                loadstring(game:HttpGet("https://raw.githubusercontent.com/stefan-rblx/esp-lib/main/public", true))()
-            end
-        getgenv().Visibility = Value
-    end)
-    sections.Players:CreateToggle("Show Nametags", {Description = "Shows Nametags of the players"}, function(Value)
-            if getgenv().esp_loaded == false and Value == true then
-                getgenv().esp_loaded = true
-                loadstring(game:HttpGet("https://raw.githubusercontent.com/stefan-rblx/esp-lib/main/public", true))()
-            end
-        getgenv().nameESP = Value
-    end)
-    sections.Players:CreateToggle("Display Distance", {Description = "Shows how far the players are from you"}, function(Value)
-            if getgenv().esp_loaded == false and Value == true then
-                getgenv().esp_loaded = true
-                loadstring(game:HttpGet("https://raw.githubusercontent.com/stefan-rblx/esp-lib/main/public", true))()
-            end
-        getgenv().distance = Value
-    end)
-    sections.Players:CreateToggle("Enable Outline", {Description = "Enables the outline for the Nametags"}, function(Value)
-
-            if getgenv().esp_loaded == false and Value == true then
-                getgenv().esp_loaded = true
-                loadstring(game:HttpGet("https://raw.githubusercontent.com/stefan-rblx/esp-lib/main/public", true))()
-            end
-        getgenv().outline = Value
-    end)
-    sections.World:CreateToggle("No Fog", {Description = "Destroys the fog allowing you to see further"}, function(state)
-        local oldfog = game:GetService("Lighting").FogEnd
-        getgenv().nofog = false
-        getgenv().nofog = state
-        if state then
-            while wait() do
-                game:GetService("Lighting").FogEnd = 10000
-                for i,v in pairs(game:GetService("Lighting"):GetChildren()) do
-                    if v:IsA("Atmosphere") then
-                        v:Destroy()
-                    end
-                end
-                if getgenv().nofog == false then 
-                    game:GetService("Lighting").FogEnd = oldfog
-                    local atmos = Instance.new("Atmosphere", game:GetService("Lighting"))
+        sections.Movement:CreateToggle("Enable Flight", {Description = "Allows you to fly in the air"}, function(state)
+            getgenv().flight = false
+            getgenv().flight = state
+            if state then
+                while wait() do 
+                    if not getgenv().flight then break end
+                    local plr = game.Players.LocalPlayer.Character
+                    plr.HumanoidRootPart.Velocity = game.Workspace.CurrentCamera.CFrame.lookVector * settings.flightspeed
                 end
             end
-        end
-    end)
-
-    sections.Locations:CreateDropdown("Location List", {List = {"Kabiwaru Village","Jingers Home","Abubu Cave","Ushumaru Village","Zapiwara Cave","Zapiwara Mountain","Kiribata Village","Owyubashis Home","Butterfly Mansion","Final Selection"}, Default = "Select A Location"}, function(s)
-        local client = game.Players.LocalPlayer.Character 
-        local stuff = client.HumanoidRootPart
-        local ts = game:GetService("TweenService")
-
-        if s == "Kabiwaru Village" then 
-            ts:Create(stuff, TweenInfo.new(7, Enum.EasingStyle.Linear), {CFrame = CFrame.new(2007, 315, -3072)}):Play()
-        end
-        if s == "Jingers Home" then 
-            ts:Create(stuff, TweenInfo.new(7, Enum.EasingStyle.Linear), {CFrame = CFrame.new(1803, 334, -3520)}):Play()
-        end
-        if s == "Abubu Cave" then 
-            ts:Create(stuff, TweenInfo.new(7, Enum.EasingStyle.Linear), {CFrame = CFrame.new(1051, 276, -3556)}):Play()
-        end
-        if s == "Ushumaru Village" then 
-            ts:Create(stuff, TweenInfo.new(7, Enum.EasingStyle.Linear), {CFrame = CFrame.new(13, 354, -3081)}):Play()
-        end
-        if s == "Zapiwara Cave" then 
-            ts:Create(stuff, TweenInfo.new(7, Enum.EasingStyle.Linear), {CFrame = CFrame.new(-29, 277, -2492)}):Play()
-        end
-        if s == "Zapiwara Mountain" then 
-            ts:Create(stuff, TweenInfo.new(7, Enum.EasingStyle.Linear), {CFrame = CFrame.new(-876, 469, -2343)}):Play()
-        end
-        if s == "Kiribata Village" then 
-            ts:Create(stuff, TweenInfo.new(7, Enum.EasingStyle.Linear), {CFrame = CFrame.new(-108, 283, -1538)}):Play()
-        end
-        if s == "Owyubashis Home" then 
-            ts:Create(stuff, TweenInfo.new(7, Enum.EasingStyle.Linear), {CFrame = CFrame.new(1328, 315, -4571)}):Play()
-        end
-        if s == "Butterfly Mansion" then 
-            ts:Create(stuff, TweenInfo.new(7, Enum.EasingStyle.Linear), {CFrame = CFrame.new(3002, 316, -3784)}):Play()
-        end
-        if s == "Final Selection" then 
-            ts:Create(stuff, TweenInfo.new(7, Enum.EasingStyle.Linear), {CFrame = CFrame.new(5322, 365, -2422)}):Play()
-        end
-    end)
-    sections.Locations:CreateDropdown("Boss Areas", {List = {"Slasher","Giyu"}, Default = "Select A Boss Area"}, function(s)
-        local client = game.Players.LocalPlayer.Character 
-        local stuff = client.HumanoidRootPart
-        local ts = game:GetService("TweenService")
-
-        if s == "Slasher" then 
-            ts:Create(stuff, TweenInfo.new(7, Enum.EasingStyle.Linear), {CFrame = CFrame.new(4262, 364, -4375)}):Play()
-        end
-        if s == "Giyu" then 
-            ts:Create(stuff, TweenInfo.new(7, Enum.EasingStyle.Linear), {CFrame = CFrame.new(3095, 364, -2945)}):Play()
-        end
-    end)
-    sections.Locations:CreateButton("Teleport to Flower", function()
-        local plr = game.Players.LocalPlayer.Character
-        if plr:FindFirstChild("HumanoidRootPart") then 
-            for i,v in pairs(game:GetService("Workspace")["Demon_Flowers_Spawn"]:GetDescendants()) do 
-                if v:IsA("MeshPart") and v.Name == "Cube.002" then 
-                    plr.HumanoidRootPart.CFrame = v.CFrame
-                end
-            end
-        end
-    end)
-
-    sections.Menu:CreateKeybind("Menu Toggle", "...", function(pressed)
-        if pressed then
-            for i,v in pairs(game.CoreGui:GetDescendants()) do 
-                if v:IsA("Frame") and v.Name == "Container" then
-                    if v.Visible == true then
-                        v.Visible = false
-                    else 
-                        v.Visible = true
-                    end
-                end
-            end
-        end
-    end)
-
-
-    function checks()
-        for _,check in pairs(game.CoreGui:GetDescendants()) do 
-            if check:IsA("ImageLabel") and check.Image == "rbxassetid://7409401226" then 
-                check:Destroy()
-            end
-        end
-        for _,check2 in pairs(game.CoreGui:GetDescendants()) do 
-            if check2:IsA("ImageLabel") and check2.Name == "Glow" then 
-                check2:Destroy()
-            end
-        end
-
-        local banana
-        banana = hookmetamethod(game, "__namecall", function(self, ...)
-        local method = getnamecallmethod()
-        local args = {...}
-
-        if not checkcaller() and self.Name == "moddelteasdasd123" and  method == "FireServer" then
-            return 
-        end
-
-        return banana(self, ...)
         end)
+        sections.Movement:CreateToggle("Slow Fall", {Description = "Decends your character at a slow speed"}, function(state)
+            getgenv().slowfall = false
+            getgenv().slowfall = state
+            if state then 
+                while wait() do 
+                    slowfall_1()
+                end
+            end
+        end)
+        sections.Movement:CreateSlider("Flight Speed", {Min = 10, Max = 225, DefaultValue = 10}, function(v)
+            settings.flightspeed = v
+        end)
+
+        sections.Character:CreateButton("Reset", function()
+            local plr = game.Players.LocalPlayer.Character
+            if plr:FindFirstChild("Humanoid") then 
+                plr.Humanoid.Health = 0
+            end
+        end)
+        sections.Character:CreateButton("Revive Yourself", function()
+            local plr = game.Players.LocalPlayer.Character
+            if plr:FindFirstChild("Humanoid") then 
+                local ohString1 = "Revive"
+                local ohInstance2 = plr
+                local ohInstance3 = plr
+
+                game:GetService("ReplicatedStorage").Remotes.To_Server.Handle_Initiate_S:FireServer(ohString1, ohInstance2, ohInstance3)
+            end
+        end)
+        sections.Character:CreateToggle("Auto Evasive", {Description = "Auto evades attacks for you when its ready"}, function(state)
+            getgenv().evade = false
+            getgenv().evade = state
+            if state then
+                while wait(.1) do 
+                    if not getgenv().wagon then break end
+                    game:GetService("ReplicatedStorage").Remotes.evasive:FireServer()
+                end
+            end
+        end)
+        sections.Character:CreateDropdown("Buy Items", {List = {"Green Katana","Golden Katana"}, Default = "Select A Item"}, function(s)
+            if s == "Green Katana" then 
+                game:GetService("ReplicatedStorage").Remotes.To_Server.Handle_Initiate_S:FireServer("buysomething", game:GetService("Players").LocalPlayer, "Green Katana", game:GetService("ReplicatedStorage").Player_Data[tostring(game.Players.LocalPlayer)].Yen, game:GetService("ReplicatedStorage").Player_Data[tostring(game.Players.LocalPlayer)].Inventory)
+            end
+            if s == "Golden Katana" then 
+                game:GetService("ReplicatedStorage").Remotes.To_Server.Handle_Initiate_S:FireServer("buysomething", game:GetService("Players").LocalPlayer, "Golden Katana", game:GetService("ReplicatedStorage").Player_Data[tostring(game.Players.LocalPlayer)].Yen, game:GetService("ReplicatedStorage").Player_Data[tostring(game.Players.LocalPlayer)].Inventory)
+            end
+        end)
+
+        sections.Mastery:CreateToggle("Farm Fist Mastery", {Description = "Automatically punches for you (Be next to a log)"}, function(state)
+            getgenv().fist = false
+            getgenv().fist = state
+            if state then
+                while wait() do 
+                    if not getgenv().fist then break end
+                    wait(0.3)
+                    mouse1click()
+                end
+            end
+        end)
+        sections.Mastery:CreateButton("Check Breathing Mastery", function()
+            game:GetService("StarterGui"):SetCore("SendNotification",{
+                Title = "Bruhnhe Hub",
+                Text = "Breathing mastery is at: ".. game:GetService("ReplicatedStorage")["Player_Data"][tostring(game.Players.LocalPlayer)].Mastery["Breathing"].Value.. "%",
+            })
+        end)
+        sections.Mastery:CreateButton("Check Demon Art Mastery", function()
+            game:GetService("StarterGui"):SetCore("SendNotification",{
+                Title = "Bruhnhe Hub",
+                Text = "Demon art mastery is at: ".. game:GetService("ReplicatedStorage")["Player_Data"][tostring(game.Players.LocalPlayer)].Mastery["Demon_Art"].Value.. "%",
+            })
+        end)
+        sections.Quests:CreateToggle("Auto Deliver Wagon", {Description = "Does the wagon quest for you ⚠️"}, function(state)
+            getgenv().wagon = false
+            getgenv().wagon = state
+            if state then
+                while wait(.1) do 
+                    if not getgenv().wagon then break end
+                    local plr = game.Players.LocalPlayer.Character.HumanoidRootPart
+                    local ts = game:GetService("TweenService")
+                    ts:Create(plr, TweenInfo.new(4.5, Enum.EasingStyle.Linear), {CFrame = CFrame.new(226, 283, -1607)}):Play() -- pickup location
+                    wait(6)
+                    game:GetService("Players").LocalPlayer.PlayerGui.Npc_Dialogue.Do_Text:Fire("Gradnpa_Wagwon_Dialogue", "Grandpa Wagwon")
+                    wait(2)
+                    game:GetService("Players").LocalPlayer.PlayerGui.Npc_Dialogue.Button_Clicked:Fire(true)
+                    wait(0.5)
+                    game:GetService("Players").LocalPlayer.PlayerGui.Npc_Dialogue.Button_Clicked:Fire(true)
+                    wait(0.5)
+                    game:GetService("Players").LocalPlayer.PlayerGui.Npc_Dialogue.Button_Clicked:Fire(true)
+                    wait(0.5)
+                    game:GetService("Players").LocalPlayer.PlayerGui.Npc_Dialogue.Button_Clicked:Fire(true)
+                    wait(3)
+                    ts:Create(plr, TweenInfo.new(4.5, Enum.EasingStyle.Linear), {CFrame = CFrame.new(453, 275, -2672)}):Play()
+                    wait(7)
+                    ts:Create(plr, TweenInfo.new(4.5, Enum.EasingStyle.Linear), {CFrame = CFrame.new(226, 283, -1607)}):Play()
+                    wait(35)
+                end
+            end
+        end)
+        sections.Quests:CreateButton("Manual Teleport", function()
+            local plr = game.Players.LocalPlayer.Character.HumanoidRootPart
+            local ts = game:GetService("TweenService")
+            ts:Create(plr, TweenInfo.new(1.5), {CFrame = CFrame.new(227, 283, -1664)}):Play()
+            wait(1.5)
+            ts:Create(plr, TweenInfo.new(1.5), {CFrame = CFrame.new(385, 351, -1758)}):Play()
+            wait(1.8)
+            ts:Create(plr, TweenInfo.new(1.5), {CFrame = CFrame.new(385, 351, -1983)}):Play()
+            wait(2.4)
+            ts:Create(plr, TweenInfo.new(1.5), {CFrame = CFrame.new(540, 388, -2258)}):Play()
+            wait(1.5)
+            ts:Create(plr, TweenInfo.new(1.5), {CFrame = CFrame.new(475, 370, -2524)}):Play()
+            wait(2.7)
+            ts:Create(plr, TweenInfo.new(1.5), {CFrame = CFrame.new(454, 275, -2675)}):Play()
+            wait(3)
+            ts:Create(plr, TweenInfo.new(1.5), {CFrame = CFrame.new(475, 370, -2524)}):Play()
+            wait(1.5)
+            ts:Create(plr, TweenInfo.new(1.5), {CFrame = CFrame.new(540, 388, -2258)}):Play()
+            wait(2.4)
+            ts:Create(plr, TweenInfo.new(1.5), {CFrame = CFrame.new(385, 351, -1983)}):Play()
+            wait(1.8)
+            ts:Create(plr, TweenInfo.new(1.5), {CFrame = CFrame.new(385, 351, -1758)}):Play()
+            wait(1.5)
+            ts:Create(plr, TweenInfo.new(1.5), {CFrame = CFrame.new(227, 283, -1664)}):Play()
+        end)
+
+
+        getgenv().esp_loaded = false
+        getgenv().Visibility = false 
+        getgenv().nameESP = false
+        getgenv().distance = false
+        getgenv().outline = false
+
+        sections.Players:CreateToggle("Enabled", {Description = "Enables the visuals"}, function(Value)
+                if getgenv().esp_loaded == false and Value == true then
+                    getgenv().esp_loaded = true
+                    loadstring(game:HttpGet("https://raw.githubusercontent.com/stefan-rblx/esp-lib/main/public", true))()
+                end
+            getgenv().Visibility = Value
+        end)
+        sections.Players:CreateToggle("Show Nametags", {Description = "Shows Nametags of the players"}, function(Value)
+                if getgenv().esp_loaded == false and Value == true then
+                    getgenv().esp_loaded = true
+                    loadstring(game:HttpGet("https://raw.githubusercontent.com/stefan-rblx/esp-lib/main/public", true))()
+                end
+            getgenv().nameESP = Value
+        end)
+        sections.Players:CreateToggle("Display Distance", {Description = "Shows how far the players are from you"}, function(Value)
+                if getgenv().esp_loaded == false and Value == true then
+                    getgenv().esp_loaded = true
+                    loadstring(game:HttpGet("https://raw.githubusercontent.com/stefan-rblx/esp-lib/main/public", true))()
+                end
+            getgenv().distance = Value
+        end)
+        sections.Players:CreateToggle("Enable Outline", {Description = "Enables the outline for the Nametags"}, function(Value)
+
+                if getgenv().esp_loaded == false and Value == true then
+                    getgenv().esp_loaded = true
+                    loadstring(game:HttpGet("https://raw.githubusercontent.com/stefan-rblx/esp-lib/main/public", true))()
+                end
+            getgenv().outline = Value
+        end)
+        sections.World:CreateToggle("No Fog", {Description = "Destroys the fog allowing you to see further"}, function(state)
+            local oldfog = game:GetService("Lighting").FogEnd
+            getgenv().nofog = false
+            getgenv().nofog = state
+            if state then
+                while wait() do
+                    game:GetService("Lighting").FogEnd = 10000
+                    for i,v in pairs(game:GetService("Lighting"):GetChildren()) do
+                        if v:IsA("Atmosphere") then
+                            v:Destroy()
+                        end
+                    end
+                    if getgenv().nofog == false then 
+                        game:GetService("Lighting").FogEnd = oldfog
+                        local atmos = Instance.new("Atmosphere", game:GetService("Lighting"))
+                    end
+                end
+            end
+        end)
+
+        sections.Locations:CreateDropdown("Location List", {List = {"Kabiwaru Village","Jingers Home","Abubu Cave","Ushumaru Village","Zapiwara Cave","Zapiwara Mountain","Kiribata Village","Owyubashis Home","Butterfly Mansion","Final Selection"}, Default = "Select A Location"}, function(s)
+            local client = game.Players.LocalPlayer.Character 
+            local stuff = client.HumanoidRootPart
+            local ts = game:GetService("TweenService")
+
+            if s == "Kabiwaru Village" then 
+                ts:Create(stuff, TweenInfo.new(7, Enum.EasingStyle.Linear), {CFrame = CFrame.new(2007, 315, -3072)}):Play()
+            end
+            if s == "Jingers Home" then 
+                ts:Create(stuff, TweenInfo.new(7, Enum.EasingStyle.Linear), {CFrame = CFrame.new(1803, 334, -3520)}):Play()
+            end
+            if s == "Abubu Cave" then 
+                ts:Create(stuff, TweenInfo.new(7, Enum.EasingStyle.Linear), {CFrame = CFrame.new(1051, 276, -3556)}):Play()
+            end
+            if s == "Ushumaru Village" then 
+                ts:Create(stuff, TweenInfo.new(7, Enum.EasingStyle.Linear), {CFrame = CFrame.new(13, 354, -3081)}):Play()
+            end
+            if s == "Zapiwara Cave" then 
+                ts:Create(stuff, TweenInfo.new(7, Enum.EasingStyle.Linear), {CFrame = CFrame.new(-29, 277, -2492)}):Play()
+            end
+            if s == "Zapiwara Mountain" then 
+                ts:Create(stuff, TweenInfo.new(7, Enum.EasingStyle.Linear), {CFrame = CFrame.new(-876, 469, -2343)}):Play()
+            end
+            if s == "Kiribata Village" then 
+                ts:Create(stuff, TweenInfo.new(7, Enum.EasingStyle.Linear), {CFrame = CFrame.new(-108, 283, -1538)}):Play()
+            end
+            if s == "Owyubashis Home" then 
+                ts:Create(stuff, TweenInfo.new(7, Enum.EasingStyle.Linear), {CFrame = CFrame.new(1328, 315, -4571)}):Play()
+            end
+            if s == "Butterfly Mansion" then 
+                ts:Create(stuff, TweenInfo.new(7, Enum.EasingStyle.Linear), {CFrame = CFrame.new(3002, 316, -3784)}):Play()
+            end
+            if s == "Final Selection" then 
+                ts:Create(stuff, TweenInfo.new(7, Enum.EasingStyle.Linear), {CFrame = CFrame.new(5322, 365, -2422)}):Play()
+            end
+        end)
+        sections.Locations:CreateDropdown("Boss Areas", {List = {"Slasher","Giyu"}, Default = "Select A Boss Area"}, function(s)
+            local client = game.Players.LocalPlayer.Character 
+            local stuff = client.HumanoidRootPart
+            local ts = game:GetService("TweenService")
+
+            if s == "Slasher" then 
+                ts:Create(stuff, TweenInfo.new(7, Enum.EasingStyle.Linear), {CFrame = CFrame.new(4262, 364, -4375)}):Play()
+            end
+            if s == "Giyu" then 
+                ts:Create(stuff, TweenInfo.new(7, Enum.EasingStyle.Linear), {CFrame = CFrame.new(3095, 364, -2945)}):Play()
+            end
+        end)
+        sections.Locations:CreateButton("Teleport to Flower", function()
+            local plr = game.Players.LocalPlayer.Character
+            if plr:FindFirstChild("HumanoidRootPart") then 
+                for i,v in pairs(game:GetService("Workspace")["Demon_Flowers_Spawn"]:GetDescendants()) do 
+                    if v:IsA("MeshPart") and v.Name == "Cube.002" then 
+                        plr.HumanoidRootPart.CFrame = v.CFrame
+                    end
+                end
+            end
+        end)
+        sections.Locations:CreateButton("Teleport to Muzan", function()
+            for i,v in pairs(game.Workspace:FindFirstChild("Muzan"):GetChildren()) do 
+                if v:IsA("Vector3Value") and v.Name == "SpawnPos" then
+                    local ts = game:GetService("TweenService")
+                    ts:Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(6, Enum.EasingStyle.Linear), {CFrame = CFrame.new(v.Value)}):Play()
+    
+                end
+            end            
+        end)
+
+        sections.Menu:CreateKeybind("Menu Toggle", "...", function(pressed)
+            if pressed then
+                for i,v in pairs(game.CoreGui:GetDescendants()) do 
+                    if v:IsA("Frame") and v.Name == "Container" then
+                        if v.Visible == true then
+                            v.Visible = false
+                        else 
+                            v.Visible = true
+                        end
+                    end
+                end
+            end
+        end)
+        function checks()
+            if game.CoreGui:FindFirstChild("CFAHubPremium2022") then 
+                game.CoreGui.CFAHubPremium2022.Name = math.random(1, 1000)
+            end
+          
+            local banana
+            banana = hookmetamethod(game, "__namecall", function(self, ...)
+            local method = getnamecallmethod()
+            local args = {...}
+
+            if not checkcaller() and self.Name == "moddelteasdasd123" and  method == "FireServer" then
+                return 
+            end
+
+            return banana(self, ...)
+            end)
+        end
+        checks()
     end
-    checks()
 end
 
 

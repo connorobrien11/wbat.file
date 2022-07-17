@@ -1,6 +1,4 @@
-pcall(function()
-function mainscript()
-    if game.PlaceId == 6152116144 then  
+ if game.PlaceId == 6152116144 then  
         local hub = loadstring(game:HttpGet("https://raw.githubusercontent.com/connorobrien11/jzac.za/main/RJgVELP6tzWgbE6c976MDBcp6TtU4q"))()
         local window = hub:CreateWindow("<font color=\"#4FC3F7\">Bruhnhe Hub</font>", "Project Slayers", true)
 
@@ -332,16 +330,3 @@ function mainscript()
         end
         checks()
     end
-end
-
-
-local table = loadstring(game:HttpGet("https://raw.githubusercontent.com/connorobrien11/gyaz.fn/main/qDuwmH7z2hZNrLbaQDt%5E%25HX3krjqQbEMwopr"))()
-local check = game:GetService("RbxAnalyticsService"):GetClientId()
-    for _,check1 in pairs(table) do 
-        if check1 == check then 
-            mainscript()
-        else 
-            warn('ijbtPnpxp4LWzFAafFebdkdQdDBtpZyG62F7zGtFLwyiS')
-        end 
-    end
-end)
